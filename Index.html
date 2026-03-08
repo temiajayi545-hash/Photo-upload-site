@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Photo Upload</title>
+
+<style>
+body{
+font-family:Arial;
+text-align:center;
+background:#f4f4f4;
+padding:40px;
+}
+
+.container{
+background:white;
+padding:30px;
+border-radius:10px;
+max-width:500px;
+margin:auto;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+button{
+padding:10px 20px;
+background:#007bff;
+color:white;
+border:none;
+border-radius:5px;
+margin-top:20px;
+}
+
+img{
+max-width:100%;
+margin-top:20px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Upload Your Photo</h2>
+
+<input type="file" id="fileInput">
+
+<br>
+
+<button onclick="uploadImage()">Upload Photo</button>
+
+<p id="status"></p>
+
+<img id="preview">
+
+</div>
+
+<script>
+
+function uploadImage(){
+
+const file=document.getElementById("fileInput").files[0];
+
+const formData=new FormData();
+
+formData.append("file",file);
+
+formData.append("upload_preset","YOUR_UPLOAD_PRESET");
+
+fetch("https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload",{
+
+method:"POST",
+
+body:formData
+
+})
+.then(res=>res.json())
+.then(data=>{
+
+document.getElementById("status").innerText="Upload Successful";
+
+document.getElementById("preview").src=data.secure_url;
+
+})
+.catch(err=>{
+
+document.getElementById("status").innerText="Upload Failed";
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
